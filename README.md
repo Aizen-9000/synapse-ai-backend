@@ -119,3 +119,5 @@ Python 3.11+
 📝 License
 
 This project currently uses no license (private).
+# synapse-ai-backend
+This is a Git Repo for our Indian Chatbot Synapse AI.
