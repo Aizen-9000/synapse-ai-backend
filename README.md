@@ -1,26 +1,121 @@
-Mobile-backend for Synapse AI
-----------------------------
 
-Run locally (development):
 
-1. Create .env from .env.example and set keys.
-2. Create a virtualenv and install requirements:
-   python -m venv .venv
-   .venv/bin/activate   (or Windows: .venv\Scripts\activate)
-   pip install -r requirements.txt
+Synapse Mobile – Backend (Python / FastAPI)
 
-3. Start server:
-   uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+This is the backend service for Synapse Mobile, a multilingual AI chatbot application that supports:
 
-APIs:
-- POST /chat/generate   -> { message, max_tokens?, temperature? }
-- POST /chat/stream     -> streaming
-- POST /chat/transcribe -> upload audio file
-- POST /chat/tts        -> { text }
-- GET  /chat/search?q=  -> search
-- POST /chat/translate  -> { text, target_lang }
+🧠 LLM responses using Grok / Llama / custom models
 
-Notes:
-- By default LLMAdapter uses (in priority): OLLAMA local -> GROQ -> OPENAI
-- Set USE_OLLAMA=true if you run `ollama` on local machine.
-- For free/unlimited local Llama models you can run ollama, or host llama in local infra.
+🎤 Speech-to-Text (STT) with Google / Vosk / OpenAI Whisper (configurable)
+
+🔊 Text-to-Speech (TTS) with 11Labs / Edge / OpenAI (configurable)
+
+🌍 Multilingual support
+
+🌐 Web search + returns visited URLs
+
+🔌 REST API endpoints for the Flutter mobile app
+
+
+The backend is built with FastAPI, fully stateless, and deployable on Render, Railway, Vercel, or any Linux server.
+
+
+---
+
+🔧 Project Structure
+
+mobile-backend/
+│
+├── app/
+│   ├── main.py
+│   ├── config.py
+│   ├── deps.py
+│   ├── models.py
+│   ├── llm.py
+│   ├── translate.py
+│   ├── websearch.py
+│   ├── stt.py
+│   ├── tts.py
+│   ├── router_chat.py
+│   └── router_utils.py
+│
+├── requirements.txt
+├── .env
+└── README.md
+
+
+---
+
+🚀 Running Locally
+
+1. Install dependencies
+
+pip install -r requirements.txt
+
+2. Copy .env.example to .env and add your keys
+
+GROK_API_KEY=your_key_here
+ELEVENLABS_API_KEY=your_key_here
+
+3. Start server
+
+uvicorn app.main:app --reload
+
+Backend runs at:
+
+http://localhost:8000
+
+
+---
+
+🌐 Deployment
+
+This backend is optimized for:
+
+Render (recommended)
+
+Railway
+
+Fly.io
+
+Any VM / Docker server
+
+
+Just connect your GitHub repository and deploy.
+
+
+---
+
+📡 Endpoints (Summary)
+
+Method	URL	Description
+
+POST	/chat/	LLM chatbot response
+POST	/stt/	Speech to Text
+POST	/tts/	Text to Speech
+GET	/search?q=	Web search
+GET	/health	Status check
+
+
+
+---
+
+📦 Tech Stack
+
+FastAPI – Backend framework
+
+Grok / Llama API – LLM
+
+11Labs / Edge / Whisper – TTS / STT
+
+DuckDuckGo / SerpAPI – Web search
+
+Python 3.11+
+
+
+
+---
+
+📝 License
+
+This project currently uses no license (private).
