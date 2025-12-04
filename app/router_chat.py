@@ -1,12 +1,15 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
-from fastapi.responses import StreamingResponse, JSONResponse
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
+from langdetect import detect, DetectorFactory
 
 from .llm import llm
 from .stt import transcribe_bytes
 from .tts import synthesize_elevenlabs
 from .websearch import duckduckgo_search
 from .translate import translate
+
+DetectorFactory.seed = 0  # for consistent language detection
 
 router = APIRouter(prefix="/chat")
 
@@ -17,33 +20,50 @@ class ChatRequest(BaseModel):
 
 @router.post("/generate")
 async def generate_chat(req: ChatRequest):
-    resp = await llm.generate(req.message, max_tokens=req.max_tokens or 512, temperature=req.temperature or 0.7)
-    return {"response": resp}
+    # detect input language
+    try:
+        detected_lang = detect(req.message)
+    except:
+        detected_lang = "en"
 
-@router.post("/stream")
-async def stream_chat(req: ChatRequest):
-    """
-    Very simple streaming endpoint (non-llm streaming).
-    For providers that support SSE/stream, you'd need to implement streaming per-provider.
-    Here we do a simple generator that yields the output in one chunk.
-    """
-    async def generator():
-        text = await llm.generate(req.message, max_tokens=req.max_tokens or 512, temperature=req.temperature or 0.7)
-        yield text
-    return StreamingResponse(generator(), media_type="text/plain")
+    # translate to English (LLM language) if needed
+    if detected_lang != "en":
+        prompt = await translate(req.message, "en")
+    else:
+        prompt = req.message
+
+    resp_en = await llm.generate(prompt, max_tokens=req.max_tokens or 512, temperature=req.temperature or 0.7)
+
+    # translate back to user language
+    if detected_lang != "en":
+        resp = await translate(resp_en, detected_lang)
+    else:
+        resp = resp_en
+
+    return {"response": resp, "language": detected_lang}
 
 @router.post("/transcribe")
-async def transcribe(file: UploadFile = File(...)):
+async def transcribe(file: UploadFile = File(...), target_lang: str | None = None):
     data = await file.read()
     text = await transcribe_bytes(data)
-    return {"text": text}
+    detected_lang = "en"
+    try:
+        detected_lang = detect(text)
+    except:
+        pass
+
+    if target_lang and target_lang != detected_lang:
+        text = await translate(text, target_lang)
+
+    return {"text": text, "language": detected_lang}
 
 @router.post("/tts")
 async def tts(req: dict):
     text = req.get("text", "")
+    lang = req.get("language", "en")
     if not text:
         raise HTTPException(status_code=400, detail="No text provided")
-    audio = await synthesize_elevenlabs(text)
+    audio = await synthesize_elevenlabs(text, voice=lang)
     if not audio:
         raise HTTPException(status_code=500, detail="TTS not available")
     return StreamingResponse(iter([audio]), media_type="audio/mpeg")
