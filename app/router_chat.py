@@ -45,6 +45,7 @@ class ChatRequest(BaseModel):
     message: str
     max_tokens: int | None = 512
     temperature: float | None = 0.7
+    target_lang: str | None = None   # <--- user can force output
 
 
 # -------------------------------
@@ -60,26 +61,21 @@ async def generate_chat(req: ChatRequest):
     except:
         detected = "en"
 
-    user_lang = detected
+    # Use user-specified language if provided
+    user_lang = req.target_lang or detected
 
-    # ALWAYS translate to English for the LLM
-    if user_lang != "en":
-        english_prompt = await translate(msg, "en")
-    else:
-        english_prompt = msg
+    # Translate to English for LLM
+    english_prompt = msg if user_lang == "en" else await translate(msg, "en")
 
-    # Generate response in English
+    # LLM generates response in English
     resp_en = await llm.generate(
         english_prompt,
         max_tokens=req.max_tokens or 512,
         temperature=req.temperature or 0.7,
     )
 
-    # Convert back to user language
-    if user_lang != "en":
-        final_resp = await translate(resp_en, user_lang)
-    else:
-        final_resp = resp_en
+    # Translate back to user language
+    final_resp = resp_en if user_lang == "en" else await translate(resp_en, user_lang)
 
     return {"response": final_resp, "language": user_lang}
 
