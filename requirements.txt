@@ -7,3 +7,4 @@ faiss-cpu
 httpx
 python-dotenv
 pydantic-settings
+openai
