@@ -12,7 +12,7 @@ faiss-cpu==1.13.2
 numpy==1.26.4
 
 # HTTP requests
-httpx==1.2.5
+httpx
 requests==2.32.1
 
 # Environment & config
