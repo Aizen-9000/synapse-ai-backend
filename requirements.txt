@@ -5,7 +5,7 @@ pydantic
 
 # Database
 SQLAlchemy==1.4.46
-databases==0.7.3  <-- REMOVE THIS
+databases
 
 # Vector store
 faiss-cpu==1.13.2 --only-binary :all:
