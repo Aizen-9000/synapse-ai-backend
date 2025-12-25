@@ -8,7 +8,7 @@ SQLAlchemy==2.0.23
 # databases==0.7.3  <-- REMOVE THIS
 
 # Vector store
-faiss-cpu==1.13.2
+faiss-cpu==1.13.2 --only-binary :all:
 numpy==1.26.4
 
 # HTTP requests
