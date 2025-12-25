@@ -1,32 +1,8 @@
-# Core backend
-fastapi==0.111.1
+fastapi==0.103.2
 uvicorn[standard]==0.23.2
-pydantic
-
-# Database
-SQLAlchemy==1.4.46
-databases
-
-# Vector store
+sqlalchemy==1.4.46
+pydantic==1.10.13
+numpy==1.26.4
 faiss-cpu==1.13.2 --only-binary :all:
-numpy
-
-# HTTP requests
-httpx
-requests
-
-# Environment & config
-python-dotenv
-
-# Audio / STT / TTS
-pyttsx3
-vosk
-soundfile
-
-# Optional for multilingual processing / NLP
-transformers
-torch
-
-# Others
-typing-extensions
-pydantic_settings
+httpx==0.25.0
+python-dotenv==1.0.0
