@@ -4,8 +4,8 @@ uvicorn[standard]==0.23.2
 pydantic
 
 # Database
-SQLAlchemy==1.4.49
-# databases==0.7.3  <-- REMOVE THIS
+SQLAlchemy==1.4.46
+databases==0.7.3  <-- REMOVE THIS
 
 # Vector store
 faiss-cpu==1.13.2 --only-binary :all:
