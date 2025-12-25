@@ -25,8 +25,8 @@ soundfile==0.12.1
 
 # Optional for multilingual processing / NLP
 transformers==4.42.0
-torch==2.2.0
+torch
 
 # Others
-typing-extensions==4.9.0
+typing-extensions
 pydantic_settings
