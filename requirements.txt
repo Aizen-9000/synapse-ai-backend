@@ -5,8 +5,7 @@ pydantic==2.7.2
 
 # Database
 SQLAlchemy==2.0.23
-databases==0.7.3          # Optional, if you use async DB connections
-sqlite3                  # Only built-in, no need to install if using SQLite
+# databases==0.7.3  <-- REMOVE THIS
 
 # Vector store
 faiss-cpu==1.13.2
