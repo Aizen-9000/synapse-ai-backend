@@ -5,7 +5,7 @@ class Settings(BaseSettings):
     # Core settings
     APP_NAME: str = "Synapse AI"
     DEBUG: bool = True
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./synapse.db")
+    DATABASE_URL: str 
     VECTOR_STORE_PATH: str = os.getenv("VECTOR_STORE_PATH", "./vector_store/faiss.index")
     MAX_FREE_TOKENS: int = int(os.getenv("MAX_FREE_TOKENS", 1000))
     MAX_HISTORY: int = int(os.getenv("MAX_HISTORY", 20))
