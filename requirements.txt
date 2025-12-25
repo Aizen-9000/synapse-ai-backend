@@ -1,7 +1,7 @@
 # Core backend
 fastapi==0.111.1
 uvicorn[standard]==0.23.2
-pydantic==2.7.2
+pydantic
 
 # Database
 SQLAlchemy==2.0.23
