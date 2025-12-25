@@ -4,7 +4,7 @@ uvicorn[standard]==0.23.2
 pydantic
 
 # Database
-SQLAlchemy==1.4.46
+SQLAlchemy==2.0.23
 databases
 
 # Vector store
