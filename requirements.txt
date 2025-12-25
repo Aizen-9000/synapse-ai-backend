@@ -9,22 +9,22 @@ SQLAlchemy==2.0.23
 
 # Vector store
 faiss-cpu==1.13.2 --only-binary :all:
-numpy==1.26.4
+numpy
 
 # HTTP requests
 httpx
-requests==2.32.1
+requests
 
 # Environment & config
-python-dotenv==1.0.0
+python-dotenv
 
 # Audio / STT / TTS
-pyttsx3==2.90
+pyttsx3
 vosk
-soundfile==0.12.1
+soundfile
 
 # Optional for multilingual processing / NLP
-transformers==4.42.0
+transformers
 torch
 
 # Others
