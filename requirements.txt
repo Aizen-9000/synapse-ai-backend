@@ -20,7 +20,7 @@ python-dotenv==1.0.0
 
 # Audio / STT / TTS
 pyttsx3==2.90
-vosk==0.3.62
+vosk
 soundfile==0.12.1
 
 # Optional for multilingual processing / NLP
