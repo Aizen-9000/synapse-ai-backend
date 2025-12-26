@@ -1,11 +1,32 @@
+# Core backend
 fastapi
 uvicorn[standard]
-sqlalchemy
 pydantic
-numpy
+
+# Database
+SQLAlchemy
+databases
+# Vector store
 faiss-cpu
+numpy
+# HTTP requests
 httpx
+requests
+
+# Environment & config
 python-dotenv
+
+# Audio / STT / TTS
+pyttsx3
+vosk
+soundfile
+
+# Optional for multilingual processing / NLP
+transformers
+torch
+
+# Others
+typing-extensions
 pydantic-settings
 openai
 psycopg2-binary
