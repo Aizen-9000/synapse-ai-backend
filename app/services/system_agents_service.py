@@ -1,4 +1,4 @@
-from adapters.system_agents_adapter import SystemAgentsAdapter
+from app.adapters.system_agents_adapter import SystemAgentsAdapter
 
 class SystemAgentsService:
     def __init__(self):

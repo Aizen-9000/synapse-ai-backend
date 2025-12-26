@@ -1,4 +1,4 @@
-from adapters.sync_adapter import SyncAdapter
+from app.adapters.sync_adapter import SyncAdapter
 
 class SyncEngineService:
     def __init__(self):

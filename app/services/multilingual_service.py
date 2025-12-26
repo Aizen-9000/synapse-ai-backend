@@ -1,4 +1,4 @@
-from adapters.multilingual_adapter import MultilingualAdapter
+from app.adapters.multilingual_adapter import MultilingualAdapter
 
 class MultilingualService:
     def __init__(self):
