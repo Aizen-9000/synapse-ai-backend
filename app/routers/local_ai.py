@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from services.local_ai_service import LocalAIService
+from app.services.local_ai_service import LocalAIService
 
 router = APIRouter()
 service = LocalAIService()

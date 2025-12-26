@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from services.system_agents_service import SystemAgentsService
+from app.services.system_agents_service import SystemAgentsService
 
 router = APIRouter()
 service = SystemAgentsService()

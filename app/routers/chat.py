@@ -1,7 +1,7 @@
 from fastapi import APIRouter, UploadFile, File
-from services.chat_service import ChatService
-from services.stt_service import STTService
-from services.tts_service import TTSService
+from app.services.chat_service import ChatService
+from app.services.stt_service import STTService
+from app.services.tts_service import TTSService
 
 router = APIRouter()
 chat_service = ChatService()

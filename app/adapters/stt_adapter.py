@@ -1,3 +1,4 @@
+from typing import BinaryIO
 import requests
 from app.config import settings
 
@@ -6,20 +7,22 @@ class STTAdapter:
         self.api_key = settings.ELEVENLABS_API_KEY
         self.endpoint = "https://api.elevenlabs.io/v1/speech-to-text"
 
-    def transcribe(self, audio_file_path: str, language: str = "en"):
-        """
-        Sends audio to 11Labs STT API and returns transcribed text.
-        Supports multilingual transcription based on `language`.
-        """
+    def transcribe(self, audio: BinaryIO, language: str = "en") -> str:
         headers = {"xi-api-key": self.api_key}
-        files = {"file": open(audio_file_path, "rb")}
 
-        # Optional: set language in params if API supports it
+        files = {
+            "file": audio
+        }
+
         data = {"language": language}
 
-        response = requests.post(self.endpoint, headers=headers, files=files, data=data)
-        response.raise_for_status()  # Raises exception if API fails
+        response = requests.post(
+            self.endpoint,
+            headers=headers,
+            files=files,
+            data=data
+        )
+        response.raise_for_status()
 
         result = response.json()
-        # Assuming API returns {"text": "transcribed text"}
         return result.get("text", "")

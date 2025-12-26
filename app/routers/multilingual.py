@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from services.multilingual_service import MultilingualService
+from app.services.multilingual_service import MultilingualService
 
 router = APIRouter()
 service = MultilingualService()
