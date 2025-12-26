@@ -1,45 +1,90 @@
-import os
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
 
 class Settings(BaseSettings):
-    # Core settings
+    # =========================
+    # App Core
+    # =========================
     APP_NAME: str = "Synapse AI"
-    DEBUG: bool = True
-    DATABASE_URL: str 
-    VECTOR_STORE_PATH: str = os.getenv("VECTOR_STORE_PATH", "./vector_store/faiss.index")
-    MAX_FREE_TOKENS: int = int(os.getenv("MAX_FREE_TOKENS", 1000))
-    MAX_HISTORY: int = int(os.getenv("MAX_HISTORY", 20))
-    MAX_TOKENS_PER_REQUEST: int = int(os.getenv("MAX_TOKENS_PER_REQUEST", 2000))
-    SYSTEM_MEMORY_LIMIT: int = int(os.getenv("SYSTEM_MEMORY_LIMIT", 2048))
-    UPLOAD_DIRS: str = os.getenv("UPLOAD_DIRS", "./uploads")
-    VECTOR_DIM: int = int(os.getenv("VECTOR_DIM", 1536))
+    DEBUG: bool = False
+    MODE: str = "production"
 
-    # Server / Auth
-    HOST: str = os.getenv("HOST", "0.0.0.0")
-    PORT: int = int(os.getenv("PORT", 8000))
-    SECRET_KEY: str = os.getenv("SECRET_KEY", "supersecretkey")
-    JWT_ALGORITHM: str = os.getenv("JWT_ALGORITHM", "HS256")
-    MODE: str = os.getenv("MODE", "production")
+    # =========================
+    # Database (REQUIRED)
+    # =========================
+    DATABASE_URL: str
 
-    # AI / Model Keys
-    OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
-    OPENAI_MODEL: str = os.getenv("OPENAI_MODEL", "gpt-4")
-    ANTHROPIC_API_KEY: str = os.getenv("ANTHROPIC_API_KEY", "")
-    GROK_API_KEY: str = os.getenv("GROK_API_KEY", "")
-    GROK_MODEL: str = os.getenv("GROK_MODEL", "grok-1")
-    HF_API_KEY: str = os.getenv("HF_API_KEY", "")
-    USE_OLLAMA: bool = os.getenv("USE_OLLAMA", "True") == "True"
-    OLLAMA_URL: str = os.getenv("OLLAMA_URL", "http://localhost:11434")
+    # =========================
+    # Vector Store
+    # =========================
+    VECTOR_STORE_PATH: str = "./vector_store"
+    VECTOR_DIM: int = 1536
 
-    # TTS / STT
-    STT_API_KEY: str = os.getenv("STT_API_KEY", "")
-    TTS_API_KEY: str = os.getenv("TTS_API_KEY", "")
-    ELEVENLABS_API_KEY: str = os.getenv("ELEVENLABS_API_KEY", "")
-    VOSK_MODEL_PATH: str = os.getenv("VOSK_MODEL_PATH", "./models/vosk-model-small")
+    # =========================
+    # Limits
+    # =========================
+    MAX_FREE_TOKENS: int = 1000
+    MAX_HISTORY: int = 20
+    MAX_TOKENS_PER_REQUEST: int = 2000
+    SYSTEM_MEMORY_LIMIT: int = 2048
 
-    # Feature flags
-    ENABLE_RAG: bool = os.getenv("ENABLE_RAG", "True") == "True"
-    ENABLE_TOOLS: bool = os.getenv("ENABLE_TOOLS", "True") == "True"
-    ALLOW_UNLIMITED_TOKENS: bool = os.getenv("ALLOW_UNLIMITED_TOKENS", "False") == "True"
+    UPLOAD_DIRS: str = "./uploads"
+
+    # =========================
+    # Server
+    # =========================
+    HOST: str = "0.0.0.0"
+    PORT: int = 8000
+
+    # =========================
+    # Auth / Security
+    # =========================
+    SECRET_KEY: str = "supersecretkey"
+    JWT_ALGORITHM: str = "HS256"
+
+    # =========================
+    # Model Providers
+    # =========================
+    OPENAI_API_KEY: str | None = None
+    OPENAI_MODEL: str = "gpt-4"
+
+    ANTHROPIC_API_KEY: str | None = None
+
+    GROK_API_KEY: str | None = None
+    GROK_MODEL: str = "grok-1"
+
+    HF_API_KEY: str | None = None
+
+    # =========================
+    # Ollama (Local)
+    # =========================
+    USE_OLLAMA: bool = True
+    OLLAMA_URL: str = "http://localhost:11434"
+
+    # =========================
+    # Speech
+    # =========================
+    STT_API_KEY: str | None = None
+    TTS_API_KEY: str | None = None
+    ELEVENLABS_API_KEY: str | None = None
+
+    VOSK_MODEL_PATH: str = "./models/vosk-model-small"
+
+    # =========================
+    # Feature Flags
+    # =========================
+    ENABLE_RAG: bool = True
+    ENABLE_TOOLS: bool = True
+    ALLOW_UNLIMITED_TOKENS: bool = False
+
+    # =========================
+    # Pydantic config
+    # =========================
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        case_sensitive=False,
+        extra="ignore",
+    )
+
 
 settings = Settings()
