@@ -2,7 +2,8 @@
 fastapi==0.111.1
 uvicorn[standard]==0.23.2
 pydantic==2.7.2
-
+tempfile
+os
 # Database
 SQLAlchemy==2.0.23
 databases==0.7.3          # Optional, if you use async DB connections
