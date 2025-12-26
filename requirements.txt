@@ -30,3 +30,4 @@ typing-extensions
 pydantic-settings
 openai
 psycopg2-binary
+python-multipart
