@@ -1,4 +1,5 @@
 from fastapi import APIRouter, UploadFile, File
+from pydantic import BaseModel
 from app.services.chat_service import ChatService
 from app.services.stt_service import STTService
 from app.services.tts_service import TTSService
@@ -8,9 +9,19 @@ chat_service = ChatService()
 stt_service = STTService()
 tts_service = TTSService()
 
+# -----------------------------
+# Request body model for text chat
+# -----------------------------
+class ChatRequest(BaseModel):
+    message: str
+
 @router.post("/text")
-async def chat_text(prompt: str):
-    return {"response": chat_service.generate_reply(prompt)}
+async def chat_text(request: ChatRequest):
+    """
+    Expects JSON body like: { "message": "Hello" }
+    """
+    reply = chat_service.generate_reply(request.message)
+    return {"response": reply}
 
 @router.post("/audio")
 async def chat_audio(file: UploadFile = File(...)):
