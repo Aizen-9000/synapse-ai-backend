@@ -8,16 +8,24 @@ chat_service = ChatService()
 stt_service = STTService()
 tts_service = TTSService()
 
-@router.post("/chat/text")
+@router.post("/text")
 async def chat_text(prompt: str):
-    return {"reply": chat_service.generate_reply(prompt)}
+    return {"response": chat_service.generate_reply(prompt)}
 
-@router.post("/chat/audio")
+@router.post("/audio")
 async def chat_audio(file: UploadFile = File(...)):
     temp_path = f"/tmp/{file.filename}"
+
     with open(temp_path, "wb") as f:
         f.write(await file.read())
-    text = stt_service.transcribe_audio(temp_path)
+
+    with open(temp_path, "rb") as audio_file:
+        text = stt_service.transcribe_audio(audio_file)
+
     reply = chat_service.generate_reply(text)
-    audio_file = tts_service.synthesize_text(reply)
-    return {"text": reply, "audio_file": audio_file}
+    audio_file_path = tts_service.synthesize_text(reply)
+
+    return {
+        "text": reply,
+        "audio_file": audio_file_path
+    }
