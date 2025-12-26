@@ -29,5 +29,6 @@ torch
 typing-extensions
 pydantic-settings
 openai
+psycopg2
 psycopg[binary]
 python-multipart
