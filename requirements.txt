@@ -32,3 +32,4 @@ openai
 psycopg2
 psycopg[binary]
 python-multipart
+cors
