@@ -15,8 +15,7 @@ app = FastAPI(
 # CORS configuration
 # -----------------------------
 origins = [
-    "http://localhost:5173",               # your local frontend for dev
-    "https://your-frontend.onrender.com"   # your deployed frontend
+    "*"   # your deployed frontend
 ]
 
 app.add_middleware(
