@@ -1,90 +1,49 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings
+from functools import lru_cache
 
 
 class Settings(BaseSettings):
-    # =========================
-    # App Core
-    # =========================
-    APP_NAME: str = "Synapse AI"
+    # App
+    APP_NAME: str = "OmniAI"
+    ENV: str = "production"
     DEBUG: bool = False
-    MODE: str = "production"
 
-    # =========================
-    # Database (REQUIRED)
-    # =========================
-    DATABASE_URL: str
-
-    # =========================
-    # Vector Store
-    # =========================
-    VECTOR_STORE_PATH: str = "./vector_store"
-    VECTOR_DIM: int = 1536
-
-    # =========================
-    # Limits
-    # =========================
-    MAX_FREE_TOKENS: int = 1000
-    MAX_HISTORY: int = 20
-    MAX_TOKENS_PER_REQUEST: int = 2000
-    SYSTEM_MEMORY_LIMIT: int = 2048
-
-    UPLOAD_DIRS: str = "./uploads"
-
-    # =========================
-    # Server
-    # =========================
-    HOST: str = "0.0.0.0"
-    PORT: int = 8000
-
-    # =========================
-    # Auth / Security
-    # =========================
-    SECRET_KEY: str = "supersecretkey"
+    # Security
+    MASTER_ENCRYPTION_KEY: str
+    JWT_SECRET: str
     JWT_ALGORITHM: str = "HS256"
 
-    # =========================
-    # Model Providers
-    # =========================
+    # Databases
+    DATABASE_URL: str
+    MONGODB_URL: str
+
+    # Cloud LLMs
     OPENAI_API_KEY: str | None = None
-    OPENAI_MODEL: str = "gpt-4"
-
     ANTHROPIC_API_KEY: str | None = None
-
     GROK_API_KEY: str | None = None
-    GROK_MODEL: str = "grok-1"
 
-    HF_API_KEY: str | None = None
-
-    # =========================
-    # Ollama (Local)
-    # =========================
-    USE_OLLAMA: bool = True
-    OLLAMA_URL: str = "http://localhost:11434"
-
-    # =========================
-    # Speech
-    # =========================
-    STT_API_KEY: str | None = None
-    TTS_API_KEY: str | None = None
+    # Audio
     ELEVENLABS_API_KEY: str | None = None
 
-    VOSK_MODEL_PATH: str = "./models/vosk-model-small"
+    # Web Search
+    WEB_SEARCH_API_KEY: str | None = None
+    WEB_SEARCH_BASE_URL: str | None = None
 
-    # =========================
+    # Offline / Ollama
+    OLLAMA_BASE_URL: str = "http://localhost:11434"
+    OLLAMA_DEFAULT_MODEL: str = "llama3"
+
     # Feature Flags
-    # =========================
-    ENABLE_RAG: bool = True
-    ENABLE_TOOLS: bool = True
-    ALLOW_UNLIMITED_TOKENS: bool = False
+    ENABLE_IMAGE_GEN: bool = True
+    ENABLE_FILE_ANALYSIS: bool = True
+    ENABLE_MULTI_AGENT: bool = True
+    ENABLE_WEB_SEARCH: bool = True
 
-    # =========================
-    # Pydantic config
-    # =========================
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        case_sensitive=False,
-        extra="ignore",
-    )
+    class Config:
+        env_file = ".env"
+        case_sensitive = True
 
 
-settings = Settings()
+@lru_cache
+def get_settings() -> Settings:
+    return Settings()

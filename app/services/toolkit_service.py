@@ -1,8 +1,9 @@
 class ToolkitService:
-    def perform_action(self, action_name: str, params: dict):
-        # Add more tools as needed
-        if action_name == "calculate":
-            return eval(params.get("expression", "0"))
-        elif action_name == "format_text":
-            return str(params.get("text", "")).upper()
-        return None
+    def decide_tools(self, user_input: str) -> dict:
+        # Example logic: return recommended tools based on input keywords
+        tools = []
+        if "image" in user_input.lower():
+            tools.append("ImageGenerator")
+        if "search" in user_input.lower():
+            tools.append("WebSearch")
+        return {"recommended_tools": tools}

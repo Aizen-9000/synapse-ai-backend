@@ -1,4 +1,6 @@
 class LocalAIAdapter:
-    def generate(self, prompt: str, context: dict = None):
-        # Mock local AI response
-        return f"LocalAI Response for prompt: {prompt}"
+    def __init__(self, ollama_controller):
+        self.ollama = ollama_controller
+
+    def generate(self, prompt: str) -> str:
+        return self.ollama.run(prompt)

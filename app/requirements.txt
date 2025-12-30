@@ -1,33 +1,53 @@
-# Core backend
-fastapi==0.111.1
-uvicorn[standard]==0.23.2
-pydantic==2.7.2
-tempfile
-os
-# Database
-SQLAlchemy==2.0.23
-databases==0.7.3          # Optional, if you use async DB connections
-sqlite3                  # Only built-in, no need to install if using SQLite
+# --- Core Framework ---
+fastapi
+uvicorn[standard]
+pydantic
+python-dotenv
 
-# Vector store
-faiss-cpu==1.13.2
-numpy==1.26.4
+# --- HTTP & Async ---
+httpx
+aiofiles
 
-# HTTP requests
-httpx==1.2.5
-requests==2.32.1
+# --- Databases ---
+sqlalchemy
+psycopg2-binary
+motor              # MongoDB async client
 
-# Environment & config
-python-dotenv==1.0.0
+# --- Security & Crypto ---
+cryptography
+passlib[bcrypt]
+python-jose[cryptography]
 
-# Audio / STT / TTS
-pyttsx3==2.90
-vosk==0.3.62
-soundfile==0.12.1
+# --- AI / LLM ---
+openai
+anthropic
+ollama
 
-# Optional for multilingual processing / NLP
-transformers==4.42.0
-torch==2.2.0
+# --- Vector / Embeddings ---
+faiss-cpu
+numpy
 
-# Others
-typing-extensions==4.9.0
+# --- NLP / Language ---
+langdetect
+sentence-transformers
+
+# --- Web Search & Scraping ---
+beautifulsoup4
+lxml
+
+# --- File Parsing ---
+pypdf
+python-docx
+pandas
+pillow
+
+# --- Audio (STT/TTS) ---
+soundfile
+librosa
+elevenlabs
+
+# --- Utilities ---
+tenacity
+orjson
+rich
+pydantic_settings

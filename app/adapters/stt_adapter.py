@@ -1,28 +1,18 @@
-from typing import BinaryIO
-import requests
-from app.config import settings
+from abc import ABC, abstractmethod
 
-class STTAdapter:
-    def __init__(self):
-        self.api_key = settings.ELEVENLABS_API_KEY
-        self.endpoint = "https://api.elevenlabs.io/v1/speech-to-text"
+class STTAdapter(ABC):
+    @abstractmethod
+    async def transcribe(self, audio_bytes: bytes, language: str | None) -> str:
+        pass
+# app/adapters/whisper_stt_adapter.py
 
-    def transcribe(self, audio: BinaryIO, language: str = "en") -> str:
-        headers = {"xi-api-key": self.api_key}
+from app.adapters.stt_adapter import STTAdapter
 
-        files = {
-            "file": audio
-        }
-
-        data = {"language": language}
-
-        response = requests.post(
-            self.endpoint,
-            headers=headers,
-            files=files,
-            data=data
-        )
-        response.raise_for_status()
-
-        result = response.json()
-        return result.get("text", "")
+class WhisperSTTAdapter(STTAdapter):
+    async def transcribe(
+        self,
+        audio_bytes: bytes,
+        language: str | None
+    ) -> str:
+        # Placeholder for Whisper / WhisperFlow / API
+        return "Transcription not implemented yet"

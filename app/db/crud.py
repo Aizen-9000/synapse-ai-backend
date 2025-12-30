@@ -1,36 +1,81 @@
 # app/db/crud.py
 
-from sqlalchemy import create_engine, text
+from sqlalchemy.orm import Session
+from sqlalchemy.exc import NoResultFound
+from app.db import models
+from app.security.encryption import verify_password, get_password_hash
 
-class CRUD:
-    def __init__(self, database_url: str):
-        self.engine = create_engine(database_url, future=True)
 
-    def create_document(self, content: str) -> int:
-        query = text("""
-            INSERT INTO documents (content)
-            VALUES (:content)
-            RETURNING id
-        """)
-        with self.engine.begin() as conn:
-            result = conn.execute(query, {"content": content})
-            return result.scalar_one()
+# -----------------------------
+# CHAT MEMORY
+# -----------------------------
+def save_chat_memory(db: Session, user_id: int, encrypted_content: str):
+    memory = models.ChatMemory(
+        user_id=user_id,
+        encrypted_content=encrypted_content
+    )
+    db.add(memory)
+    db.commit()
+    db.refresh(memory)
+    return memory
 
-    def get_document_by_id(self, doc_id: int) -> str | None:
-        query = text("""
-            SELECT content
-            FROM documents
-            WHERE id = :doc_id
-        """)
-        with self.engine.connect() as conn:
-            result = conn.execute(query, {"doc_id": doc_id}).fetchone()
-            return result[0] if result else None
 
-    def list_documents(self, limit: int = 10):
-        query = text("""
-            SELECT id, content
-            FROM documents
-            LIMIT :limit
-        """)
-        with self.engine.connect() as conn:
-            return conn.execute(query, {"limit": limit}).fetchall()
+# -----------------------------
+# ADMIN OPERATIONS
+# -----------------------------
+def list_all_users(db: Session):
+    """Return all users in the system."""
+    return db.query(models.User).all()
+
+
+def delete_user(db: Session, user_id: int):
+    """Delete a user by their ID."""
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    if not user:
+        return None
+    db.delete(user)
+    db.commit()
+    return True
+
+
+# -----------------------------
+# AUTHENTICATION OPERATIONS
+# -----------------------------
+def create_user(db: Session, username: str, password: str, email: str | None = None):
+    """Create a new user and store a hashed password."""
+    hashed_password = get_password_hash(password)
+    user = models.User(username=username, hashed_password=hashed_password, email=email)
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return user
+
+
+def authenticate_user(db: Session, username: str, password: str):
+    """Authenticate a user by verifying their password."""
+    try:
+        user = db.query(models.User).filter(models.User.username == username).one()
+    except NoResultFound:
+        return None
+
+    if not verify_password(password, user.hashed_password):
+        return None
+
+    return user
+# -----------------------------
+# USER OPERATIONS
+# -----------------------------
+def get_user(db: Session, user_id: int):
+    return db.query(models.User).filter(models.User.id == user_id).first()
+
+
+def update_user_settings(db: Session, user_id: int, settings: dict):
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    if not user:
+        return None
+
+    # assuming User has a JSON or dict-like `settings` column
+    user.settings = settings
+    db.commit()
+    db.refresh(user)
+    return user

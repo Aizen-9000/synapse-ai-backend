@@ -1,9 +1,3 @@
 class EmbeddingStore:
-    def __init__(self):
-        self.store = {}
-
-    def add_embedding(self, key, embedding):
-        self.store[key] = embedding
-
-    def get_embedding(self, key):
-        return self.store.get(key)
+    def embed(self, text: str) -> list[float]:
+        return [float(len(text))]

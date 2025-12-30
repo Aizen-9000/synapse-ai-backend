@@ -1,3 +1,6 @@
 class SystemAgentsAdapter:
-    def run(self, agent_id: str, task_data: dict):
-        return f"Agent {agent_id} executed task with data {task_data}"
+    def __init__(self, agent_manager):
+        self.manager = agent_manager
+
+    async def run(self, agent_name: str, payload: dict) -> dict:
+        return await self.manager.run(agent_name, payload)

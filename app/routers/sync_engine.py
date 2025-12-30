@@ -1,13 +1,12 @@
 from fastapi import APIRouter
-from app.services.sync_engine_service import SyncEngineService
+from app.services.sync_service import SyncService
+from app.adapters.sync_adapter import SyncAdapter
 
 router = APIRouter()
-service = SyncEngineService()
 
-@router.get("/sync/{user_id}")
-async def sync(user_id: str):
-    return {"status": service.sync_data(user_id)}
+sync_adapter = SyncAdapter()  # Permanent
+service = SyncService(adapter=sync_adapter)
 
-@router.get("/sync_status/{user_id}")
-async def sync_status(user_id: str):
-    return {"status": service.get_sync_status(user_id)}
+@router.post("/sync")
+def sync_data(payload: dict):
+    return service.sync(payload)

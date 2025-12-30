@@ -1,10 +1,18 @@
 from fastapi import APIRouter
 from app.services.tts_service import TTSService
+from app.adapters.tts_adapter import TTSAdapter, LocalTTSAdapter
 
 router = APIRouter()
-service = TTSService()
+
+# Instantiate a real adapter (offline-safe default)
+adapter: TTSAdapter = LocalTTSAdapter()
+service = TTSService(adapter)
+
 
 @router.post("/tts")
-async def synthesize(text: str, language: str = "en", voice: str = "default"):
-    result = service.synthesize_text(text, language, voice)
-    return {"audio": result}
+async def text_to_speech(payload: dict):
+    audio_bytes = await service.synthesize(
+        payload["text"],
+        payload.get("language", "en")
+    )
+    return {"audio": audio_bytes}

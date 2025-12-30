@@ -1,9 +1,13 @@
 from fastapi import APIRouter
-from app.services.local_ai_service import LocalAIService
+from app.services.local_ai import LocalAIService
+from app.runtime.ollama_controller import OllamaController
 
 router = APIRouter()
-service = LocalAIService()
+ollama = OllamaController()
+service = LocalAIService(ollama)
 
-@router.post("/generate")
-async def generate_response(prompt: str):
-    return {"response": service.generate_response(prompt)}
+@router.post("/offline-message")
+def offline_message(payload: dict):
+    text = payload["message"]
+    offline = payload.get("offline", True)
+    return {"response": service.generate(text, offline)}

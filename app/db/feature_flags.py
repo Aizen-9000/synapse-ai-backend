@@ -1,8 +1,16 @@
-from sqlalchemy import Column, String, Boolean
-from .base import Base
+DEFAULT_FLAGS = {
+    "web_search": True,
+    "multi_agent": True,
+    "image_generation": False,
+    "premium_models": False,
+    "offline_mode": True,
+    "stt": True,
+    "tts": True
+}
 
-class FeatureFlags(Base):
-    __tablename__ = "feature_flags"
+class FeatureFlags:
+    def __init__(self, flags: dict):
+        self.flags = flags or DEFAULT_FLAGS
 
-    feature_name = Column(String, primary_key=True)
-    enabled = Column(Boolean, default=True)
+    def enabled(self, feature: str) -> bool:
+        return self.flags.get(feature, False)

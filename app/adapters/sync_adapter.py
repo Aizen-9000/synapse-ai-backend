@@ -1,6 +1,6 @@
 class SyncAdapter:
-    def sync(self, user_id: str):
-        return f"Data synced for {user_id}"
+    def should_sync(self) -> bool:
+        return True
 
-    def status(self, user_id: str):
-        return "Completed"
+    def sync_payload(self, payload: dict) -> dict:
+        return payload

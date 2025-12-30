@@ -1,8 +1,15 @@
 import uuid
-from datetime import datetime
+import time
+import hashlib
 
-def generate_id():
+
+def generate_id() -> str:
     return str(uuid.uuid4())
 
-def get_timestamp():
-    return datetime.utcnow().isoformat()
+
+def now_ts() -> int:
+    return int(time.time())
+
+
+def sha256(data: str) -> str:
+    return hashlib.sha256(data.encode("utf-8")).hexdigest()

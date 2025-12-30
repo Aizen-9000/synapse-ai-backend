@@ -1,16 +1,13 @@
-from fastapi import APIRouter, UploadFile
-from app.deps import crud
-from app.utils import generate_id
+from fastapi import APIRouter, UploadFile, File
 
 router = APIRouter()
 
 @router.post("/upload")
-async def upload_file(user_id: str, file: UploadFile):
-    file_data = {
-        "id": generate_id(),
-        "user_id": user_id,
+async def upload(file: UploadFile = File(...)):
+    content = await file.read()
+    return {
         "filename": file.filename,
-        "metadata": {"content_type": file.content_type}
+        "size": len(content),
+        "status": "received",
+        "content_type": file.content_type
     }
-    saved_file = crud.save_file(file_data)
-    return {"file_id": saved_file.id, "filename": saved_file.filename}

@@ -1,11 +1,17 @@
-from fastapi import APIRouter, Depends
-from app.services.web_rag_service import WebRAGService
+from fastapi import APIRouter
+from app.media.image_generation import ImageGenerator
 
-router = APIRouter(prefix="/tools", tags=["tools"])
+router = APIRouter()
+image_service = ImageGenerator()
 
-@router.post("/web-search")
-async def web_search_tool(
-    query: str,
-    web_rag_service: WebRAGService = Depends()
-):
-    return await web_rag_service.run(query)
+@router.post("/image")
+def generate_image(payload: dict):
+    return image_service.generate(payload["prompt"])
+
+@router.get("/status")
+def tools_status():
+    return {
+        "web_search": True,
+        "file_analysis": True,
+        "image_generation": True
+    }
