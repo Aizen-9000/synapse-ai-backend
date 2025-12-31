@@ -1,35 +1,53 @@
-# Core backend
+# --- Core Framework ---
 fastapi
 uvicorn[standard]
 pydantic
-
-# Database
-SQLAlchemy
-databases
-# Vector store
-faiss-cpu
-numpy
-# HTTP requests
-httpx
-requests
-
-# Environment & config
 python-dotenv
 
-# Audio / STT / TTS
-pyttsx3
-vosk
-soundfile
+# --- HTTP & Async ---
+httpx
+aiofiles
 
-# Optional for multilingual processing / NLP
-transformers
-torch
+# --- Databases ---
+sqlalchemy
+psycopg2-binary
+motor              # MongoDB async client
 
-# Others
-typing-extensions
-pydantic-settings
+# --- Security & Crypto ---
+cryptography
+passlib[bcrypt]
+python-jose[cryptography]
+
+# --- AI / LLM ---
 openai
-psycopg2
-psycopg[binary]
-python-multipart
-cors
+anthropic
+ollama
+
+# --- Vector / Embeddings ---
+faiss-cpu
+numpy
+
+# --- NLP / Language ---
+langdetect
+sentence-transformers
+
+# --- Web Search & Scraping ---
+beautifulsoup4
+lxml
+
+# --- File Parsing ---
+pypdf
+python-docx
+pandas
+pillow
+
+# --- Audio (STT/TTS) ---
+soundfile
+librosa
+elevenlabs
+
+# --- Utilities ---
+tenacity
+orjson
+rich
+pydantic_settings
