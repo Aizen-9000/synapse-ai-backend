@@ -4,7 +4,7 @@ from functools import lru_cache
 
 class Settings(BaseSettings):
     # App
-    APP_NAME: str = "OmniAI"
+    APP_NAME: str = "SynapseAI"
     ENV: str = "production"
     DEBUG: bool = False
 

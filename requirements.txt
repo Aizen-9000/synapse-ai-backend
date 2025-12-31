@@ -51,3 +51,4 @@ tenacity
 orjson
 rich
 pydantic_settings
+python-multipart
