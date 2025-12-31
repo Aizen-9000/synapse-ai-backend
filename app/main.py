@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
+from app.plugins import PluginLoader
+plugin_loader =PluginLoader()
 from app.config import get_settings
 from app.routers import (
     auth,
@@ -16,6 +17,7 @@ from app.routers import (
     tts,
     system_agents,
     sync_engine,
+    plugins,
 )
 
 settings = get_settings()
@@ -49,7 +51,7 @@ app.include_router(stt.router, prefix="/stt", tags=["STT"])
 app.include_router(tts.router, prefix="/tts", tags=["TTS"])
 app.include_router(system_agents.router, prefix="/agents", tags=["Agents"])
 app.include_router(sync_engine.router, prefix="/sync", tags=["Sync"])
-
+app.include_router(plugins.router, prefix="/{plugin_name}/execute", tags=["Plugins"])
 
 @app.get("/health")
 def health():
