@@ -16,7 +16,7 @@ motor              # MongoDB async client
 # --- Security & Crypto ---
 cryptography
 passlib>=1.7.4
-bcrypt==4.3.0
+bcrypt==3.2.2
 python-jose[cryptography]
 
 # --- AI / LLM ---
