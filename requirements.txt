@@ -53,3 +53,4 @@ orjson
 rich
 pydantic_settings
 python-multipart
+python-jose

@@ -52,3 +52,4 @@ tenacity
 orjson
 rich
 pydantic_settings
+python-jose
